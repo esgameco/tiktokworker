@@ -1,23 +1,25 @@
 from pathlib import Path
-from mongoengine import Document, StringField, URLField, BooleanField, ListField
+from mongoengine import Document, EmbeddedDocument, StringField, URLField, BooleanField, ListField, ReferenceField, DictField
+
+from typing import List
 
 class Video(Document):
     title = StringField(default='')
     video_id = StringField(required=True, unique=True)
-    url = URLField(required=True, unique=True)
+    video_info = DictField()
     found_hashtag = StringField(default='')
 
     used = BooleanField(default=False)
 
     def download(self, path: Path, downloader) -> None:
-        downloader.download_video(path, self.url)
+        downloader.download_video(f'{path}.mp4', self.video_info)
 
 
 class Compilation(Document):
     title = StringField(default='')
     hashtag = StringField(default='')
 
-    videos = ListField(Video(), required=True)
+    videos = ListField(ReferenceField(Video), required=True)
 
     completed = BooleanField(default=False)
     working = BooleanField(default=False)
