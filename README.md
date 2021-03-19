@@ -2,5 +2,6 @@
 
 ## Todo:  
 
-Make it work
-Add docstrings to each class  
+> Make it work  
+> Add docstrings to each class  
+> Use external uploader  
